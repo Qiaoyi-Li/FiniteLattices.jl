@@ -1,0 +1,4 @@
+name = "FiniteLattices"
+uuid = "650210df-7c64-40ac-8e1f-94ea4f378b07"
+authors = ["qyli <liqiaoyi@itp.ac.cn>"]
+version = "0.1.0"
