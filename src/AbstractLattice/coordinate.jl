@@ -18,8 +18,5 @@ coordinate(Latt::SimpleLattice, idx::Int64) = coordinate(Latt, Latt[idx]...)
 
 coordinate(Latt::AbstractLattice, v::AbstractVector) = return map(x -> coordinate(Latt, x), v)
 function coordinate(Latt::AbstractLattice)
-     function f end
-     f(r::Int64...) = coordinate(Latt, r...)
-     f(v::AbstractVector) = coordinate(Latt, v)
-     return f
+     return f(args...) = coordinate(Latt, args...)
 end
