@@ -21,7 +21,7 @@ Concrete type of L × W square lattice with OBC × OBC boundary condition.
 struct OpenSquare{L, W, T <: AbstractPath} <: SquareLattice{L, W} 
      sites::Vector{NTuple{2, Int64}}
      map::Dict{NTuple{2, Int64}, Int64}
-     function OpenSquare(L::Int64, W::Int64, T::Type{<:AbstractPath})
+     function OpenSquare(L::Int64, W::Int64, T::Type{<:AbstractPath} = ZigzagPath)
           LattType = OpenSquare{L, W, T};
           return new{L, W, T}(_initialize(LattType)...)
      end
@@ -37,12 +37,12 @@ Concrete type of L × W square lattice with OBC × PBC boundary condition.
 struct Cylinder{L, W, T <: AbstractPath} <: SquareLattice{L, W} 
      sites::Vector{NTuple{2, Int64}}
      map::Dict{NTuple{2, Int64}, Int64}
-     function Cylinder(L::Int64, W::Int64, T::Type{<:AbstractPath})
+     function Cylinder(L::Int64, W::Int64, T::Type{<:AbstractPath} = ZigzagPath)
           LattType = Cylinder{L, W, T};
           return new{L, W, T}(_initialize(LattType)...)
      end
 end
-
+equiVec(::Type{Cylinder{L, W, T}}) where {L, W, T} = ((0, W), )
 
 """
      SquaLatt(L::Int64,
@@ -54,7 +54,7 @@ Generic constructor of square lattices.
 
 Supported `Path` = `:Zigzag`, `:Snake`, `:Diagonal`
 """
-function  SquaLatt(L::Int64, W::Int64, T::Symbol = :Zigzag; kwargs...)
+function SquaLatt(L::Int64, W::Int64, T::Symbol = :Zigzag; kwargs...)
 
      Path = "$(T)Path" |> uppercasefirst |> Symbol |> eval
      return SquaLatt(L, W, Path; kwargs...)

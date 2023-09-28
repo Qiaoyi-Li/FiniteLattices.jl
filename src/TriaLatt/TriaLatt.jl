@@ -23,11 +23,12 @@ Concrete type of L × W triangular lattice with YC boundary condition.
 struct YCTriangular{L, W, T <: AbstractPath} <: TriangularLattice{L, W} 
      sites::Vector{NTuple{2, Int64}}
      map::Dict{NTuple{2, Int64}, Int64}
-     function YCTriangular(L::Int64, W::Int64, T::Type{<:AbstractPath})
+     function YCTriangular(L::Int64, W::Int64, T::Type{<:AbstractPath} = ZigzagPath)
           LattType = YCTriangular{L, W, T};
           return new{L, W, T}(_initialize(LattType)...)
      end
 end
+equiVec(::Type{YCTriangular{L, W, T}}) where {L, W, T} = ((0, W), )
 
 """
      struct XCTriangular{L, W, T <: AbstractPath} <: TriangularLattice{L, W} 
@@ -42,12 +43,13 @@ Note only even `W` supports XC boundary condition.
 struct XCTriangular{L, W, T <: AbstractPath} <: TriangularLattice{L, W} 
      sites::Vector{NTuple{2, Int64}}
      map::Dict{NTuple{2, Int64}, Int64}
-     function XCTriangular(L::Int64, W::Int64, T::Type{<:AbstractPath})
+     function XCTriangular(L::Int64, W::Int64, T::Type{<:AbstractPath} = ZigzagPath)
           @assert iseven(W)
           LattType = XCTriangular{L, W, T};
           return new{L, W, T}(_initialize(LattType)...)
      end
 end
+equiVec(::Type{XCTriangular{L, W, T}}) where {L, W, T} = ((-Int64(W/2), W), )
 
 function Base.show(io::IO, Latt::T) where {L, W, T <: YCTriangular{L, W}}
      println(io, "$T:")
