@@ -1,23 +1,26 @@
 module FiniteLattices
 
 using LinearAlgebra
-import Base:length, iterate
+import Base: length, size, iterate, getindex, permute!, deleteat!
+import LinearAlgebra: norm
 
-export AbstractLattice, SimpleLattice, CompositeLattice, AbstractPath, SnakePath, ZigzagPath, DiagonalPath, equiVec, primVec, coordinate, metric, neighbor
-include("AbstractLattice/AbstractLattice.jl")
-include("AbstractLattice/SimpleLattice.jl")
-include("AbstractLattice/CompositeLattice.jl")
-include("AbstractLattice/Path.jl")
-include("AbstractLattice/coordinate.jl")
-include("AbstractLattice/metric.jl")
-include("AbstractLattice/neighbor.jl")
+export AbstractLattice, EmbeddedLattice, NonEmbeddedLattice, SimpleLattice
+export AbstractBoundaryCondition, OpenBoundaryCondition, PeriodicBoundaryCondition, TwistBoundaryCondition, CompositeBoundaryCondition
+export coordinate, distance, Zigzag!, Snake!, neighbor, equiVec
+include("Lattice/AbstractLattice.jl")
+include("Lattice/BC.jl")
+include("Lattice/SimpleLattice.jl")
+include("Lattice/Path.jl")
+include("Lattice/neighbor.jl")
 
-export SquareLattice, OpenSquare, Cylinder, SquaLatt
-include("SquaLatt/SquaLatt.jl")
-include("SquaLatt/iterate.jl")
+export SquareLattice, OpenSqua, YCSqua
+include("Lattice/SquaLatt.jl")
 
-export TriangularLattice, YCTriangular, XCTriangular
-include("TriaLatt/TriaLatt.jl")
-include("TriaLatt/iterate.jl")
+export TriangularLattice, YCTria, XCTria
+include("Lattice/TriaLatt.jl")
+
+export CompositeLattice
+include("Lattice/CompositeLattice.jl")
+
 
 end # module FiniteLattices
