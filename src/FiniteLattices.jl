@@ -6,7 +6,7 @@ import LinearAlgebra: norm
 
 export AbstractLattice, EmbeddedLattice, NonEmbeddedLattice, SimpleLattice
 export AbstractBoundaryCondition, OpenBoundaryCondition, PeriodicBoundaryCondition, TwistBoundaryCondition, CompositeBoundaryCondition
-export coordinate, distance, Zigzag!, Snake!, neighbor, equiVec
+export coordinate, distance, Zigzag!, Snake!, neighbor, equiVec, relaVec
 include("Lattice/AbstractLattice.jl")
 include("Lattice/BC.jl")
 include("Lattice/SimpleLattice.jl")

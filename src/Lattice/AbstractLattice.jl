@@ -46,6 +46,18 @@ function distance(Latt::EmbeddedLattice, idx1::Int64, idx2::Int64)
      end
 end
 
+"""
+     relaVec(Latt::EmbeddedLattice, idx1::Int64, idx2::Int64) -> ::NTuple{D, Float64}
+Return the nearest relative vector between the two sites. Note PBC is considered.
+"""
+function relaVec(Latt::EmbeddedLattice, idx1::Int64, idx2::Int64)
+     V = argmin(equiVec(Latt)) do v
+          norm(coordinate(Latt, idx2) .- coordinate(Latt, idx1) .+ v)
+     end
+     return coordinate(Latt, idx2) .- coordinate(Latt, idx1) .+ V
+end
+relaVec(Latt::EmbeddedLattice, pair::NTuple{2, Int64}) = relaVec(Latt, pair[1], pair[2])
+
 for f in [:coordinate]
      # f(Latt, idx) = f(Latt, Latt[idx])
      @eval $f(Latt::EmbeddedLattice, idx::Int64) = $f(Latt, Latt[idx])
@@ -53,7 +65,7 @@ for f in [:coordinate]
      @eval $f(Latt::EmbeddedLattice, lsidx::AbstractVector=1:size(Latt)) = map(x -> $f(Latt, x), lsidx)
 end
 
-for f in [:distance]
+for f in [:distance, :relaVec]
      # broadcast
      @eval $f(Latt::EmbeddedLattice, lsidx1::AbstractVector, idx2::Int64) = map(x -> $f(Latt, x, idx2), lsidx1)
      @eval $f(Latt::EmbeddedLattice, idx1::Int64, lsidx2::AbstractVector) = map(x -> $f(Latt, idx1, x), lsidx2)

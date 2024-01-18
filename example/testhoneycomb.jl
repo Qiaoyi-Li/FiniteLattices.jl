@@ -6,8 +6,6 @@ shift = ((0.0, 0.0), (1 ./ sqrt(3), 0.0))
 Latt = CompositeLattice(A, B, shift) |> Snake!
 deleteat!(Latt, 1:6)
 
-
-
 fig = Figure(size = (800, 600))
 ax = Axis(fig[1, 1])
 
