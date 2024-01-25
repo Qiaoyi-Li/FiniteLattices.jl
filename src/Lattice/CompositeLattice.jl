@@ -97,12 +97,21 @@ function deleteat!(Latt::CompositeLattice{D, N}, inds::AbstractVector) where {D,
      return Latt
 end
 
-function coordinate(Latt::CompositeLattice, site::Tuple{Int64, Tuple{D,Int64}}) where D
+function coordinate(Latt::CompositeLattice{D1}, site::Tuple{Int64, NTuple{D2,Int64}}) where {D1, D2}
      (i, r) = site
-     return coordinate(Latt.subLatts[i], r) .+ Latt.shift[i]
+     coord = coordinate(Latt.subLatts[i], r)
+     return map(1:D1) do j
+          Latt.shift[i][j] + (j ≤ D2 ? coord[j] : 0.0)
+     end |> Tuple
 end
 
-equiVec(Latt::CompositeLattice) = equiVec(Latt.subLatts[1])
+function equiVec(Latt::CompositeLattice{D}) where D  
+     return map(equiVec(Latt.subLatts[1])) do v
+          map(1:D) do i
+               i ≤ length(v) ? v[i] : 0.0
+          end
+     end
+end
 
 
 

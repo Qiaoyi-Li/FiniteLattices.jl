@@ -57,6 +57,7 @@ function relaVec(Latt::EmbeddedLattice, idx1::Int64, idx2::Int64)
      return coordinate(Latt, idx2) .- coordinate(Latt, idx1) .+ V
 end
 relaVec(Latt::EmbeddedLattice, pair::NTuple{2, Int64}) = relaVec(Latt, pair[1], pair[2])
+relaVec(Latt::EmbeddedLattice, lspairs::AbstractVector{NTuple{2, Int64}}) = map(x -> relaVec(Latt, x), lspairs)
 
 for f in [:coordinate]
      # f(Latt, idx) = f(Latt, Latt[idx])
