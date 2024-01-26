@@ -1,13 +1,13 @@
 using FiniteLattices, CairoMakie
 
-A = YCTria(12, 6)
-B = YCTria(11, 6)
-shift = ((0.0, 0.0), (1 ./ sqrt(3), 0.0))
+A = YCTria(8, 6)
+B = YCTria(8, 6)
+shift =   ((-sqrt(3) / 6, -1 / 2), (0.0, 0.0))
 Latt = CompositeLattice(A, B, shift) |> Snake!
-deleteat!(Latt, 1:6)
 
 fig = Figure(size = (800, 600))
-ax = Axis(fig[1, 1])
+ax = Axis(fig[1, 1];
+     aspect = DataAspect())
 
 # NN bond 
 for (i, j) in neighbor(Latt)

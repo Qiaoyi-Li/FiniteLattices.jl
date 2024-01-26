@@ -19,7 +19,7 @@ include("Lattice/SquaLatt.jl")
 export TriangularLattice, YCTria, XCTria
 include("Lattice/TriaLatt.jl")
 
-export CompositeLattice
+export CompositeLattice, intrapair, interpair
 include("Lattice/CompositeLattice.jl")
 
 

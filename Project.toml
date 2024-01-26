@@ -1,7 +1,7 @@
 name = "FiniteLattices"
 uuid = "650210df-7c64-40ac-8e1f-94ea4f378b07"
 authors = ["qyli <liqiaoyi@itp.ac.cn>"]
-version = "2.1.0"
+version = "2.1.1"
 
 [deps]
 FFTW = "7a1cc6ca-52ef-59f5-83cd-3a7055c09341"

@@ -26,7 +26,7 @@ function neighbor(Latt::EmbeddedLattice, i::Int64; kwargs...)
                else
                     return (i < j) ? (i, j) : (j, i)
                end
-          end |> unique
+          end |> sort! |> unique!
      end
 
      level = get(kwargs, :level, 1)
@@ -41,7 +41,7 @@ function neighbor(Latt::EmbeddedLattice; kwargs...)
      if !ismissing(d)
           matdist = distance(Latt)
           lsidx = ordered ? [(i, j) for i in 1:size(Latt) for j in 1:size(Latt)] : [(i, j) for i in 1:size(Latt) for j in i:size(Latt)]
-          return filter(idx -> matdist[idx...] ≈ d, lsidx)
+          return filter(idx -> matdist[idx...] ≈ d, lsidx) |> sort! |> unique!
      end
 
      level = get(kwargs, :level, 1)
@@ -51,16 +51,20 @@ end
 
 function _get_lsd(Latt::EmbeddedLattice)
      # get the distance list
-     lsd = distance(Latt) |> unique |> sort
+     lsd = distance(Latt) |> unique |> sort!
      # skip 0
-     filter!(x -> !isapprox(x, 0), lsd)
+     filter!(x -> !isapprox(x, 0), lsd) 
+     return lsd |> _skipapprox!
+end
+
+function _skipapprox!(v::AbstractVector)
      i = 1
-     while i < length(lsd)
-          if lsd[i] ≈ lsd[i+1]
-               deleteat!(lsd, i + 1)
+     while i < length(v)
+          if isapprox(v[i], v[i+1])
+               deleteat!(v, i + 1)
           else
                i += 1
           end
      end
-     return lsd
+     return v
 end
