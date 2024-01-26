@@ -51,14 +51,19 @@ function YCTria(L::Int64, W::Int64, θ::Real = 0.0)
 end
 
 """
-     XCTria(L::Int64, W::Int64,  θ::Real = 0.0) -> ::TriangularLattice
+     XCTria(L::Int64, W::Int64,  θ::Real = 0.0;
+          reflect::Bool = false) -> ::TriangularLattice
 
-Construct a XC `L × W` triangular lattice, where `θ` is the twist angle, e.g. `θ = 0` means PBC and `θ = π` means APBC.
+Construct a XC `L × W` triangular lattice, where `θ` is the twist angle, e.g. `θ = 0` means PBC and `θ = π` means APBC. If `reflect = true`, reflect the lattice along the `y` axis.
 """
-function XCTria(L::Int64, W::Int64, θ::Real = 0.0)
+function XCTria(L::Int64, W::Int64, θ::Real = 0.0; reflect::Bool = false)
      @assert L ≥ W && iseven(W)
      e = ((1.0, 0.0), (1/2, sqrt(3)/2))
-     sites::Vector{NTuple{2,Int64}} = [(x - div(y+1,2) + 1, y) for x in 1:L for y in 1:W]
+     if reflect
+          sites = [(x - div(y,2), y) for x in 1:L for y in 1:W]
+     else
+          sites = [(x - div(y+1,2) + 1, y) for x in 1:L for y in 1:W]
+     end
      if iszero(θ)
           BC = PeriodicBoundaryCondition((-div(W,2), W))
      else
