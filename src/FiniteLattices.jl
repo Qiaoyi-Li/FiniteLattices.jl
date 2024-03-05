@@ -2,7 +2,7 @@ module FiniteLattices
 
 using LinearAlgebra
 import Base: length, size, iterate, getindex, permute!, deleteat!
-import LinearAlgebra: norm, dot
+import LinearAlgebra: norm
 
 export AbstractLattice, EmbeddedLattice, NonEmbeddedLattice, SimpleLattice
 export AbstractBoundaryCondition, OpenBoundaryCondition, PeriodicBoundaryCondition, TwistBoundaryCondition, CompositeBoundaryCondition
@@ -22,7 +22,9 @@ include("Lattice/TriaLatt.jl")
 export CompositeLattice, intrapair, interpair
 include("Lattice/CompositeLattice.jl")
 
-export FTCoefs
+export FTCoefs, FT, FT2
 include("FT/FTCoefs.jl")
+include("FT/FT.jl")
+include("FT/FT2.jl")
 
 end # module FiniteLattices
