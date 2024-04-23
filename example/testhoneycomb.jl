@@ -1,15 +1,7 @@
 using FiniteLattices, CairoMakie
 
-A = YCTria(8, 6)
-B = YCTria(8, 6)
-# shift =  ((-sqrt(3) / 6, -1 / 2), (0.0, 0.0))
-shift =  ((0.0, 0.0), (sqrt(3) / 6, 1 / 2))
-Latt = CompositeLattice(A, B, shift) |> Snake!
+Latt = YCHoneycomb(8, 4) |> Snake!
 
-# A = XCTria(8, 4)
-# B = XCTria(8, 4; reflect=true)
-# shift = ((0.0, 0.0), (1/2, -sqrt(3) / 6))
-# Latt = CompositeLattice(A, B, shift) |> Zigzag!
 
 fig = Figure(size = (800, 600))
 ax = Axis(fig[1, 1];

@@ -22,6 +22,9 @@ include("Lattice/TriaLatt.jl")
 export CompositeLattice, intrapair, interpair
 include("Lattice/CompositeLattice.jl")
 
+export YCHoneycomb, XCHoneycomb
+include("Lattice/HoneycombLatt.jl")
+
 export FTCoefs, FT, FT2
 include("FT/FTCoefs.jl")
 include("FT/FT.jl")

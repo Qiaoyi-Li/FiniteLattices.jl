@@ -1,19 +1,17 @@
 """
      Zigzag!(Latt::EmbeddedLattice) -> Latt
 
-Sort sites according to zigzag path, i.e. lexicographic order (up to a permutation of dims, shortest dim first). 
+Sort sites according to zigzag path, i.e. lexicographic order where last dimension first. 
 """
-function Zigzag!(Latt::EmbeddedLattice)
+function Zigzag!(Latt::EmbeddedLattice{D}) where D
 
      coords = coordinate(Latt)
-     perms_dims = _get_perms_dims(coords)
-
-     perms = sortperm(coords; lt = (x, y) -> _lexicographic_lt_tol(x, y, perms_dims))
+     perms = sortperm(coords; lt = (x, y) -> _lexicographic_lt_tol(x, y, reverse(1:D)))
 
      return permute!(Latt, perms)
 end
 
-function _lexicographic_lt_tol(x::NTuple{D, Float64}, y::NTuple{D, Float64}, perms_dims::Vector{Int64}) where {D}
+function _lexicographic_lt_tol(x::NTuple{D, Float64}, y::NTuple{D, Float64}, perms_dims::AbstractVector{Int64}) where {D}
      # lexicographic order up to a tolerance
 
      for i in reverse(perms_dims[2:end])
@@ -48,11 +46,4 @@ function Snake!(Latt::EmbeddedLattice{2})
      perms = sortperm(tuple_sort; lt = (x, y) -> x[2] ≈ y[2] ? xor(iseven(x[2]), x[1][2] < y[1][2]) : x[1][1] < y[1][1])
 
      return permute!(Latt, perms)
-end
-
-function _get_perms_dims(coords::Vector{NTuple{D, Float64}}) where {D}
-     # get the permutation of dims 
-     return map(1:D) do i
-          unique(map(x -> x[i], coords)) |> length
-     end |> sortperm
 end

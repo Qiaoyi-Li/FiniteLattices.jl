@@ -33,15 +33,30 @@ end
 
 # ================ Predefined constructors ================== 
 """
-     YCTria(L::Int64, W::Int64, θ::Real = 0.0) -> ::TriangularLattice
+     YCTria(L::Int64, W::Int64, θ::Real = 0.0;
+          reflect::Bool = false,
+          scale::Real = 1.0) -> ::TriangularLattice
 
 Construct a YC `L × W` triangular lattice, where `θ` is the twist angle, e.g. `θ = 0` means PBC and `θ = π` means APBC.
+
+# kwargs
+     reflect::Bool = false
+If `reflect = true`, reflect the lattice along the `x` axis from the default convention.
+
+     scale::Real = 1.0
+The scale factor of the lattice. `scale = 1.0` means the length of the primitive vectors equals to `1.0`.
 """
-function YCTria(L::Int64, W::Int64, θ::Real = 0.0)
+function YCTria(L::Int64, W::Int64, θ::Real = 0.0;
+     scale::Real = 1.0,
+     reflect::Bool = false)
      @assert L ≥ W
      # generic zigzag! implementation can work if using the following convention
-     e = ((sqrt(3)/2, 1/2), (0.0, 1.0))
-     sites = [(x, y) for x in 1:L for y in 1:W]
+     e = ((sqrt(3)/2, 1/2).*scale, (0.0, 1.0).*scale)
+     if reflect
+          sites = [(x, y - div(x, 2)) for x in 1:L for y in 1:W]
+     else
+          sites = [(x, y - div(x+1, 2)+1) for x in 1:L for y in 1:W]
+     end
      if iszero(θ)
           BC = PeriodicBoundaryCondition((0, W))
      else
@@ -52,13 +67,23 @@ end
 
 """
      XCTria(L::Int64, W::Int64,  θ::Real = 0.0;
-          reflect::Bool = false) -> ::TriangularLattice
+          reflect::Bool = false,
+          scale::Real = 1.0) -> ::TriangularLattice
 
-Construct a XC `L × W` triangular lattice, where `θ` is the twist angle, e.g. `θ = 0` means PBC and `θ = π` means APBC. If `reflect = true`, reflect the lattice along the `y` axis.
+Construct a XC `L × W` triangular lattice, where `θ` is the twist angle, e.g. `θ = 0` means PBC and `θ = π` means APBC. 
+
+# kwargs
+     reflect::Bool = false
+If `reflect = true`, reflect the lattice along the `y` axis from the default convention.
+
+     scale::Real = 1.0
+The scale factor of the lattice. `scale = 1.0` means the length of the primitive vectors equals to `1.0`.
 """
-function XCTria(L::Int64, W::Int64, θ::Real = 0.0; reflect::Bool = false)
+function XCTria(L::Int64, W::Int64, θ::Real = 0.0;
+     reflect::Bool = false,
+     scale::Real = 1.0)
      @assert L ≥ W && iseven(W)
-     e = ((1.0, 0.0), (1/2, sqrt(3)/2))
+     e = ((1.0, 0.0).*scale, (1/2, sqrt(3)/2).*scale)
      if reflect
           sites = [(x - div(y,2), y) for x in 1:L for y in 1:W]
      else
