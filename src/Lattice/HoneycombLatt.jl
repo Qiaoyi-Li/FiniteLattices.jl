@@ -9,8 +9,9 @@ The scale factor of the lattice, which equals to the distance between the neares
 """
 function XCHoneycomb(L::Int64, W::Int64, θ::Real = 0.0; scale::Real = 1.0)
      @assert L ≥ W
-     Latt = CompositeLattice(YCTria(L, W, θ; scale = scale),
-          YCTria(L, W, θ; scale = scale, reflect = true),
+     LattA = YCTria(L, W, θ; scale = scale) |> Snake!
+     LattB = YCTria(L, W, θ; scale = scale, reflect = true) |> Snake!
+     Latt = CompositeLattice(LattA, LattB,
           ((-sqrt(3) / 6, -1 / 2).*scale, (0.0, 0.0))) 
           
      # default path, iterate sites per unit cell first
@@ -33,8 +34,9 @@ The scale factor of the lattice, which equals to the distance between the neares
 """
 function YCHoneycomb(L::Int64, W::Int64, θ::Real = 0.0; scale::Real = 1.0)
      @assert L ≥ W
-     Latt = CompositeLattice(XCTria(L, W, θ; scale = scale, reflect = false),
-          XCTria(L, W, θ; scale = scale, reflect = true),
+     LattA = XCTria(L, W, θ; scale = scale, reflect = false) |> Snake!
+     LattB = XCTria(L, W, θ; scale = scale, reflect = true) |> Snake!
+     Latt = CompositeLattice(LattA, LattB,
           ((0.0, 0.0), (1/2, sqrt(3) / 6) .* scale)) 
          
      # default path, iterate sites per unit cell first

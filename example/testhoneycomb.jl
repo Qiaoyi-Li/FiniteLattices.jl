@@ -1,6 +1,6 @@
 using FiniteLattices, CairoMakie
 
-Latt = YCHoneycomb(8, 4) |> Snake!
+Latt = XCHoneycomb(8, 4; scale = sqrt(3)) 
 
 
 fig = Figure(size = (800, 600))
