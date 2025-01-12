@@ -36,7 +36,7 @@ end
 Construct an open `L × W` square lattice.
 """
 function OpenSqua(L::Int64, W::Int64)
-     @assert L ≥ W
+     L < W && @warn "L = $(L) < $(W) = W?"
      e = ((1.0, 0.0), (0.0, 1.0))
      sites = [(x, y) for x in 1:L for y in 1:W]
      return SquareLattice(e, sites)
