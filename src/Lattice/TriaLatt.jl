@@ -96,3 +96,24 @@ function XCTria(L::Int64, W::Int64, θ::Real = 0.0;
      end
      return TriangularLattice(e, sites, BC)
 end
+
+"""
+     OHTria(L::Int64) -> ::TriangularLattice
+
+Construct a triangular lattice in an open hexagon with `L` sites in a side.  
+"""
+function OHTria(L::Int64)
+     @assert L > 0
+     e = ((sqrt(3)/2, 1/2), (0.0, 1.0))
+     sites = [(x, y) for x in 0:L-1 for y in 0:L-1-x]
+     # C6 rotation, xe₁ + ye₂ -> xe₂ + y(e₂ - e₁)
+     N = length(sites)
+     for _ in 1:5 
+          sites_rotate = map(sites[end - N + 1: end]) do (x, y)
+               return (-y, x + y)  
+          end
+          append!(sites, sites_rotate)
+     end
+     unique!(sites)
+     return TriangularLattice(e, sites) |> Zigzag!
+end

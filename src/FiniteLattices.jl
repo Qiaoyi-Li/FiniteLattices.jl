@@ -16,7 +16,7 @@ include("Lattice/neighbor.jl")
 export SquareLattice, OpenSqua, YCSqua
 include("Lattice/SquaLatt.jl")
 
-export TriangularLattice, YCTria, XCTria
+export TriangularLattice, YCTria, XCTria, OHTria
 include("Lattice/TriaLatt.jl")
 
 export CompositeLattice, intrapair, interpair
