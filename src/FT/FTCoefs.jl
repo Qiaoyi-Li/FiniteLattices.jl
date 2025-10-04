@@ -57,6 +57,7 @@ end
 
 # convert to Float64
 function FTCoefs(Latt::EmbeddedLattice{D}, k::Tuple; kwargs...) where {D}
+     @assert length(k) == D
      return FTCoefs(Latt, Float64.(k); kwargs...)
 end
 function FTCoefs(Latt::EmbeddedLattice{D}, lsk::AbstractVector{<:Tuple}; kwargs...) where {D}
